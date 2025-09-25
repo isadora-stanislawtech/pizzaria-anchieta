@@ -2,6 +2,11 @@
 
 Aplicação web para gestão de pizzaria, desenvolvida em Next.js, com autenticação de usuários (admin/cliente), pedidos, cardápio, painel administrativo e integração com banco de dados PostgreSQL via Prisma.
 
+**Trabalho P1 — Typescript**  
+Professor: **Eduardo Popovici**  
+Aluna: **Isadora Estanislau**  
+RA: **2526049**
+
 ---
 
 ## Manual de Utilização
@@ -59,46 +64,91 @@ anchieta-pizzaria/
 
 ---
 
-## Instruções de Instalação e Execução
+## 🛠 Pré-requisitos
 
-### Pré-requisitos
-- Node.js 18+  
-- PostgreSQL rodando localmente (ajuste a variável `DATABASE_URL` em `.env` se necessário)  
+- **Node.js 18+**  
+- **PostgreSQL 14+** instalado localmente  
+  - No Windows pode instalar via [pgAdmin](https://www.pgadmin.org/) ou o [PostgreSQL Installer](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads).  
+  - É necessário ter também o **cliente `psql`** disponível no terminal para executar comandos SQL.
 
-### Passos
+---
+
+## ⚙️ Configuração do Banco de Dados
+
 1. Clone o repositório e acesse a pasta:
-    ```bash
-    git clone https://github.com/isadora-stanislawtech/pizzaria-anchieta
-    cd anchieta-pizzaria
-    ```
+   ```bash
+   git clone https://github.com/isadora-stanislawtech/pizzaria-anchieta
+   cd anchieta-pizzaria
+   ```
 
 2. Instale as dependências:
-    ```bash
-    npm install
-    # ou
-    yarn install
-    ```
+   ```bash
+   npm install
+   ```
 
-3. Configure o banco de dados:
-    - Edite o arquivo `.env` se necessário:
-        ```
-        DATABASE_URL="postgresql://usuario:senha@localhost:4444/anchieta"
-        ```
-    - Rode as migrations:
-        ```bash
-        npx prisma migrate deploy
-        # ou
-        npx prisma db push
-        ```
+3. Crie um banco local no PostgreSQL:
+   ```bash
+   createdb pizzaria_anchieta
+   ```
+   (ou pelo pgAdmin → Create Database → nome `pizzaria_anchieta`).
 
-4. Inicie o servidor de desenvolvimento:
-    ```bash
-    npm run dev
-    # ou
-    yarn dev
-    ```
+4. Crie o arquivo `.env` e configure a variável de ambiente:
+   ```env
+   DATABASE_URL="postgresql://SEU_USUARIO:SUASENHA@localhost:5432/pizzaria_anchieta"
+   ```
+   > Substitua `SEU_USUARIO` e `SUASENHA` pelo usuário e senha do seu Postgres local.  
+   > Em instalações novas, o usuário padrão costuma ser `postgres`.
 
-5. Acesse em: [http://localhost:3000](http://localhost:3000)  
+5. Rode as migrations para criar todas as tabelas:
+   ```bash
+   npx prisma migrate deploy
+   ```
+   ou, se for a primeira vez:
+   ```bash
+   npx prisma db push
+   ```
+
+6. Gere o Prisma Client:
+   ```bash
+   npx prisma generate
+   ```
+
+---
+
+## 👤 Criando o usuário administrador
+
+Depois das tabelas criadas, abra o shell do Postgres:
+```bash
+psql "postgresql://SEU_USUARIO:SUASENHA@localhost:5432/pizzaria_anchieta"
+```
+
+E rode o comando abaixo **em uma única linha**:
+
+```sql
+INSERT INTO "User" (id, name, email, password, role, createdat, updatedat)
+VALUES (gen_random_uuid(), 'Administrador', 'admin@anchieta.br',
+'$2b$10$hWrGeccPCSnCZ48PHz5/S.0DK8pF.4MPYKOOVtrpXVKfDN8Qa4YZm',
+'admin', NOW(), NOW());
+```
+
+> A senha já está salva em hash **bcrypt**. O login é:  
+> **Email:** `admin@anchieta.br`  
+> **Senha:** `Admin@123`
+
+---
+
+## ▶️ Executando o Projeto
+
+Inicie o servidor de desenvolvimento:
+```bash
+npm run dev
+```
+
+Acesse em: [http://localhost:3000](http://localhost:3000)
+
+- Painel admin: [http://localhost:3000/admin](http://localhost:3000/admin)  
+  - Email: `admin@anchieta.br`  
+  - Senha: `Admin@123`
 
 ---
 
@@ -197,3 +247,4 @@ flowchart TD
 Professor: **Eduardo Popovici**  
 Aluna: **Isadora Estanislau**  
 RA: **2526049**
+

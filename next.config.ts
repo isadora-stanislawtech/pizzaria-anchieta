@@ -1,9 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Avoid failing the production build on linting generated files
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  images: {
+    unoptimized: true, // desliga o otimizador (evita 400)
   },
 };
 

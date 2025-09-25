@@ -6,8 +6,6 @@ import { useUser } from '@/app/components/UserContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-import { NotificationBell } from './components';
-
 export default function ClienteRoot() {
   const { user } = useUser();
   const router = useRouter();
@@ -20,9 +18,6 @@ export default function ClienteRoot() {
   return (
     <main className="flex flex-col items-center justify-between mt-10">
       <div className="relative w-full flex flex-col items-center min-h-[600px]">
-        <div className="absolute top-6 right-10 z-20">
-          <NotificationBell />
-        </div>
         <Image
           src="/hero.png"
           alt="Aquarela de uma cidade da Itália"

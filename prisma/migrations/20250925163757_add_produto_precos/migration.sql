@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "public"."Produto" ADD COLUMN     "preco4" DOUBLE PRECISION,
+ADD COLUMN     "preco8" DOUBLE PRECISION,
+ALTER COLUMN "preco" DROP NOT NULL;

@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   // 'admin' ou 'cliente'
+  telefone   String?  // Telefone do usuário
+  enderecoId String? @unique // FK para Endereco principal, opcional
+  enderecoPrincipal   Endereco? @relation("EnderecoPrincipal", fields: [enderecoId], references: [id])
+  pedidos   Pedido[]
+  enderecos Endereco[] @relation("EnderecosUsuario")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Pedido {
+  id            String   @id @default(uuid())
+  cliente       User     @relation(fields: [clienteId], references: [id])
+  clienteId     String
+  itens         PedidoItem[]
+  tipoPedido    String   // 'delivery' ou 'retirada'
+  enderecoId    String?  // FK para endereço (se delivery)
+  endereco      Endereco? @relation(fields: [enderecoId], references: [id])
+  formaPagamento String  // 'cartao_debito', 'cartao_credito', 'dinheiro'
+  trocoPara     Float?   // Se dinheiro, para quantos reais precisa de troco
+  valorTotal    Float
+  status        String?  // 'sendo feito', 'pronto', etc.
+  realizadoEm   DateTime @default(now())
+  finalizadoEm  DateTime?
+}
+
+model PedidoItem {
+  id          String   @id @default(uuid())
+  pedido      Pedido   @relation(fields: [pedidoId], references: [id])
+  pedidoId    String
+  tipoProduto String   // 'pizza' ou 'bebida'
+  // Pizza
+  tamanho     String?
+  meioMeio    Boolean?
+  sabores     String[]
+  // Bebida
+  bebida      String?
+  volumeMl    Int?
+  quantidade  Int
+}
+
+model Endereco {
+  id         String   @id @default(uuid())
+  // Relação principal (enderecoPrincipal)
+  usuarioPrincipal User? @relation("EnderecoPrincipal")
+  // Relação múltiplos endereços
+  usuarioId       String?
+  usuario         User? @relation("EnderecosUsuario", fields: [usuarioId], references: [id])
+  rua        String
+  bairro     String
+  numero     String
+  complemento String?
+  cep        String
+  pedidos    Pedido[]
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String?  // null = broadcast
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// Produtos do cardápio (pizzas, bebidas, etc.)
+model Produto {
+  id        String   @id @default(uuid())
+  categoria String   // 'pizza' | 'bebida' | 'outros'
+  titulo    String
+  descricao String?
+  imagem    String?  // URL ou caminho relativo em /public
+  tamanho   String?  // descrição do tamanho ou unidade
+  // Preço para itens simples (bebida/outros)
+  preco     Float?
+  // Preços específicos para pizzas: 4 e 8 pedaços
+  preco4    Float?
+  preco8    Float?
+  criadoEm  DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+}

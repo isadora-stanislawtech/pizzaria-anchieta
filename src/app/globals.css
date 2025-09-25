@@ -1,26 +1,99 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #e4deca;
+  --primary: #224464;
+  --details: #AC8945;
+  --font-text: "MarcioneSB";
+  --font-title: "RelationDLRegular";
+  --font-support: "SinkRegular";
+  --font-logo: "RelationDLScript";
+  --ui-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@font-face{
+  font-family: "MarcioneSB";
+  src: url("/fonts/marcione-semi-bold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@font-face{
+  font-family: "RelationDLRegular";
+  src: url("/fonts/relation-de-luxe-regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
+
+@font-face{
+  font-family: "RelationDLScript";
+  src: url("/fonts/relation-de-luxe-script.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face{
+  font-family: "SinkRegular";
+  src: url("/fonts/sink-regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--primary);
+  accent-color: var(--details);
+  /* Use the mapped brand font for body text by default */
+  font-family: var(--font-text);
 }
+
+.font-title {
+  font-family: "RelationDLRegular", sans-serif; /* Fonte para títulos */
+}
+
+.font-logo {
+  font-family: "RelationDLScript", sans-serif;  /* Fonte para logo */
+}
+
+.font-support {
+  font-family: "SinkRegular", sans-serif;       /* Fonte para textos de apoio */
+}
+
+html, body, #__next {
+  height: 100%;
+}
+
+input, textarea, select, button {
+  font-family: inherit;
+}
+
+input[type="number"],
+input[type="tel"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+.numeric,
+.price,
+.qty {
+  font-family: var(--ui-font) !important;
+}
+
+.cliente-form input,
+.cliente-form textarea,
+.cliente-form select,
+.cliente-form button {
+  font-family: var(--ui-font) !important;
+}
+
+.font-sans {
+  font-family: var(--ui-font) !important;
+}
+
+@keyframes float {
+          0%   { transform: translateY(0px) }
+          50%  { transform: translateY(10px) }
+          100% { transform: translateY(0px) }
+        }

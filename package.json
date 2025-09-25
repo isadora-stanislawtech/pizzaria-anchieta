@@ -2,11 +2,14 @@
   "name": "anchieta-pizzaria",
   "version": "0.1.0",
   "private": true,
+  "engines": { "node": ">=18.18" },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy"
   },
   "dependencies": {
     "@prisma/client": "^6.15.0",
